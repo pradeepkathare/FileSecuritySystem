@@ -1,0 +1,78 @@
+<html>
+<head>
+<title>Upload page</title>
+</head>
+<style>
+h1 {
+	display: block;
+	font-size: 3em;
+	margin-top: 9px;
+	margin-bottom: 3px;
+	margin-right: 0;
+	font-weight: bold;
+	margin-top: 9px;
+	margin-bottom: 3px;
+	margin-right: 0;
+}
+
+#heading {
+	text-align: center;
+	color: black;
+	background-color: grey;
+	margin-top: 20%;
+	margin-left: 15%;
+	margin-right: 15%;
+	height: 80px;
+	padding-left: 250px;
+}
+
+#fileupload {
+	text-align: center;
+	color: grey;
+	background-color: lightblue;
+	margin-top: 10px;
+	margin-left: 15%;
+	margin-right: 15%;
+}
+</style>
+
+<body>
+	<div id=heading>
+		<table>
+			<tr>
+				<td align="center"><b><h1>FILE SECURITY SYSTEMS</h1></td>
+			</tr>
+		</table>
+
+	</div>
+	<div id="fileupload">
+		<form action="lp?perform=encrypt" method="post"
+			enctype="multipart/form-data" name="form1" id="form1">
+			<center>
+
+
+				<table border="10" style="background-color: #e5e5e5;">
+
+					<tr>
+						<td style="padding: 20px;">Specify file: <input name="file"
+							type="file" id="file">
+						</td>
+					</tr>
+					<tr>
+						<td style="padding: 20px;">Specify file:<input name="file"
+							type="file" id="file">
+						</td>
+					<tr>
+						<td align="center" style="padding: 10px;"><input
+							type="submit" name="encrypt" value="Encrypt File"
+							style="height: 40px; color: blue; font-size: initial; font-weight: bold; margin-right: 25px;" />
+
+							<input type="submit" name="decrypt" value="Decrypt File"
+							style="height: 40px; color: red; font-size: initial; font-weight: bold; margin-right: 25px;" /></td>
+					</tr>
+				</table>
+				<center>
+		</form>
+	</div>
+</body>
+</html>
