@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header, footer {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;
+}
+
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+   
+/* nav ul a {
+    text-decoration: none;
+}
+ */
+article {
+    /* margin-left: 2px; */
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+    background-color: silver;
+}
+
+@media all and (min-width: 768px) {
+    .nav {text-align:left;-webkit-flex: 1 auto;flex:1 auto;-webkit-order:1;order:1;}
+    .article {-webkit-flex:5 0px;flex:5 0px;-webkit-order:2;order:2;height: 600px;}
+    footer {-webkit-order:3;order:3;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+   <h1>FILE SECURITY SYSTEMS</h1>
+</header>
+
+  </div>
+<!-- <nav>
+  <ul>
+    <li><a href="#">London</a></li>
+    <li><a href="#">Paris</a></li>
+    <li><a href="#">Tokyo</a></li>
+  </ul>
+</nav> -->
+
+<article>
+  
+	<div id="fileupload">
+		<form action="lp" method="post"
+			enctype="multipart/form-data" name="form1" id="form1">
+			<center>
+
+
+				<table border="10" style="background-color: #e5e5e5;">
+
+					<tr>
+						<td style="padding: 20px;">Specify file: <input name="file"
+							type="file" id="file">
+						</td>
+					</tr>
+					<tr>
+						<td style="padding: 20px;">Specify file:<input name="file"
+							type="file" id="file">
+						</td>
+					<tr>
+						<td align="center" style="padding: 10px;"><input
+							type="submit" name="type" value="Encrypt File"
+							style="height: 40px; color: blue; font-size: initial; font-weight: bold; margin-right: 25px;" />
+
+							<input type="submit" name="type" value="Decrypt File"
+							style="height: 40px; color: red; font-size: initial; font-weight: bold; margin-right: 25px;" /></td>
+					</tr>
+				</table>
+				<center>
+		</form>
+	</div>
+  
+</article>
+
+<footer>Copyright &copy; adritSolutions</footer>
+
+</div>
+
+</body>
+</html>
