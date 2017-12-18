@@ -45,7 +45,7 @@ initParams = {
 
 initParams = {
 @WebInitParam(name = "FilePathToEncrypt", value = "/home/pradeepkathare/Documents/filesystems/encrypt/"),
-@WebInitParam(name = "TempDirs", value = "/home/pradeepkathare/Documents/filesystems/temp/"),
+@WebInitParam(name = "TempDir", value = "/home/pradeepkathare/Documents/filesystems/temp/"),
 @WebInitParam(name = "FilePathToDecrypt", value = "/home/pradeepkathare/Documents/filesystems/temp/")})
 
 /**
@@ -72,11 +72,11 @@ public class FileUploadController extends HttpServlet {
 	
 	/* public void init() throws ServletException {
 	        // Configure UploadFilePathToEncrypt.
-	        String UploadFilePathToEncryptParam = getServletConfig().getInitParameter("UploadFilePathToEncrypt");
-	        if (UploadFilePathToEncryptParam == null) {
-	            throw new ServletException("MyServlet 'UploadFilePathToEncrypt' is not configured.");
+	        String tempDir = getServletConfig().getInitParameter("TempDir");
+	        if (tempDir == null) {
+	            throw new ServletException("MyServlet 'tempDir' is not configured.");
 	        }
-	        UploadFilePathToEncrypt = new File(UploadFilePathToEncryptParam);
+	        tempDir = new File(UploadFilePathToEncryptParam);
 	        if (!UploadFilePathToEncrypt.exists()) {
 	            throw new ServletException("MyServlet 'UploadFilePathToEncrypt' does not exist.");
 	        }
@@ -86,7 +86,7 @@ public class FileUploadController extends HttpServlet {
 	        if (!UploadFilePathToEncrypt.canWrite()) {
 	            throw new ServletException("MyServlet 'UploadFilePathToEncrypt' is not writeable.");
 	        }
-	    }*/
+	    } */
 
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -110,7 +110,14 @@ public class FileUploadController extends HttpServlet {
 				System.out.println("within encrypt");
 				//read from temp dir and encrypt data  and write to encrypt folder 
 				//Specify location of encrypt folder 
-				fileUploadEncrypt(fileNames[0], fileNames[1],);
+				//array[0]-->type either encrypt or decrypt,[1]-->filename
+				String filePathToEncrypt = getServletConfig().getInitParameter("FilePathToEncrypt");
+				System.out.println("INIT PARAMETER filePathForEncrypt : "+filePathToEncrypt);
+				
+				String tempdirPath = getServletConfig().getInitParameter("TempDir");
+				System.out.println("INIT PARAMETER filePathForEncrypt : "+tempdirPath);
+				
+				fileUploadEncrypt(fileNames[1],fileNames[2],filePathToEncrypt,tempdirPath);
 			}else{
 				//read from temp dir and decrypt data  and write to decrypt folder 
 				//Specify location of decrypt folder
@@ -163,10 +170,10 @@ public class FileUploadController extends HttpServlet {
 						System.out.println("file name uploaded"+itemName);
 						File savedFile = new File(itemName);
 						//write to temp directory
-						String t = getServletConfig().getInitParameter("UploadFilePathToEncrypt");
-						System.out.println("INIT PARAMETER filePathForEncrypt : "+UploadFilePathToEncrypt);
+						String temploc = getServletConfig().getInitParameter("TempDir");
+						System.out.println("INIT PARAMETER filePathForEncrypt : "+temploc);
 						
-						item.write(new File(UploadFilePathToEncrypt + savedFile.getName()));
+						item.write(new File(temploc + savedFile.getName()));
 						System.out.println("file name uploaded : " + savedFile.getName());
 						fileNames[i++] = savedFile.getName();
 //						fileNames[i++] = buf.toString();
@@ -225,10 +232,11 @@ public class FileUploadController extends HttpServlet {
 	// Steps 1 : ToUpload file to particular location(Decrypt)
 	// 2 : To encrypt file and store in same location
 
-	private void fileUploadEncrypt(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private String fileUploadEncrypt(String fileNameEncrypt,String keyFileName,String filePathToEncrypt,String tempdirPath) throws IOException {
 		// TODO Auto-generated method stub
 		System.out.println("within fileUploadEncrypt :");
 		BufferedWriter bw = null;
+		String result = "sucess";
 		try {
 			String clearEncryptKey = "1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF";
 			
@@ -236,19 +244,24 @@ public class FileUploadController extends HttpServlet {
 			/*String fileName_To_Encrypt = fileNames[0];
 			String fileName_key = fileNames[1];*/
 			File_Reader_Writer filereaderWriter = new File_Reader_Writer();
-			System.out.println("fileName_To_Encrypt : "+fileName_To_Encrypt +"fileName_key :"+fileName_key);
-//			String encryptedData =  filereaderWriter.readAndEncrypt( fileName_To_Encrypt,  fileName_key);
+			System.out.println("fileName_To_Encrypt : "+fileNameEncrypt +"fileName_key :"+keyFileName);
+//			String encryptedData =  filereaderWriter.readAndEncrypt( fileNameEncrypt,  keyFileName);
 		
 			//String filepath_to_encrypt = getServletConfig().getInitParameter("UploadFilePathToEncrypt");
 			
-			String encryptedData =  filereaderWriter.readAndEncrypt( fileName_To_Encrypt,  fileName_key,UploadFilePathToEncrypt);
-		
+			String encryptedData =  filereaderWriter.readAndEncrypt( fileNameEncrypt,keyFileName,tempdirPath);
+			if( !("".equals(encryptedData)) || null != encryptedData){
+				System.out.println("values in encryptedData : "+encryptedData);
+				
+				String res = filereaderWriter.writeEncryptedDataToFile(fileNameEncrypt, encryptedData,filePathToEncrypt);
+				result = res;
+			}else{
+				result = "failure";
+			}
 			
-			System.out.println("values in encryptedData : "+encryptedData);
-			PrintWriter pw = response.getWriter();
-			pw.write("sucess");
-
+			
 		}catch(Exception ex) {
+			result = "failure";
 			System.out.println(ex);
 			ex.printStackTrace();
 		}finally {
@@ -258,7 +271,7 @@ public class FileUploadController extends HttpServlet {
 				bw.close();
 			}
 		}
-	
+		return result;
 	}
 
 	
