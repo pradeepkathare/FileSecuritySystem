@@ -17,7 +17,7 @@ import com.PC_Projects.file_enc_dec.util.KeyManager;
 
 public class File_Reader_Writer {
 
-	public String readAndEncrypt(String fileName, String FileKey,File filepath_to_encrypt) {
+	public String readAndEncrypt(String fileNameEncrypt, String keyFileName,String tempDirPath) {
 
 		FileReader fr = null;
 		BufferedReader br = null;
@@ -29,8 +29,8 @@ public class File_Reader_Writer {
 			StringBuilder clearEncryptKey = new StringBuilder();
 			KeyManager keyManager = new KeyManager();
 			
-			
-			fr= new FileReader(filepath_to_encrypt+FileKey);
+			//File filepath = new File("");
+			fr= new FileReader(tempDirPath+keyFileName);
 			br = new BufferedReader(fr);
 			
 			while ((line = br.readLine()) != null) {
@@ -39,10 +39,10 @@ public class File_Reader_Writer {
 				clearEncryptKey.append(line);
 			}
 			
-			fr = new FileReader(filepath_to_encrypt+fileName);
+			fr = new FileReader(tempDirPath+fileNameEncrypt);
 			br = new BufferedReader(fr);
 
-			System.out.println("filename : " + fileName);
+			System.out.println("filename : ");
 			
 
 			
@@ -58,6 +58,7 @@ public class File_Reader_Writer {
 
 			System.out.println("error in readAndEncrypt   : " + ex);
 			ex.printStackTrace();
+			
 		} finally {
 
 			if (fr != null) {
@@ -86,12 +87,13 @@ public class File_Reader_Writer {
 	}
 	
 	
-	public void writeEncryptedDataToFile(String fileName,String encryptedData) {
+	public String writeEncryptedDataToFile(String fileName,String encryptedData,String filePathToEncrypt) {
 		
 		BufferedWriter bw = null;
+		String res = "sucess";
 		try {
 			
-			File file = new File("E://pradeep//"+fileName);
+			File file = new File(filePathToEncrypt+fileName);
 			
 			 bw = new BufferedWriter(new FileWriter(file));
 			bw.write(encryptedData);
@@ -100,6 +102,7 @@ public class File_Reader_Writer {
 			
 			System.out.println("error while closing bufferreader : " + ex);
 			ex.printStackTrace();
+			res = "failure";
 			
 		}finally {
 			
@@ -114,6 +117,7 @@ public class File_Reader_Writer {
 
 			}
 		}
+		return res;
 	}
 	
 	
