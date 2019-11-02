@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 
+import com.PC_Projects.file_enc_dec.dao.File_Reader_Writer;
 import com.PC_Projects.file_enc_dec.util.HibernateUtil;
 import com.PC_Projects.file_enc_dec.util.KeyManager;
 
@@ -96,7 +97,7 @@ public class LoginController extends HttpServlet {
 				} else {
 					try {
 						String itemName = item.getName();
-						System.out.println("file name uploaded");
+						System.out.println("file name uploaded"+itemName);
 						File savedFile = new File(itemName);
 
 						/*while ((item.getInputStream().read() != -1)) {
@@ -122,10 +123,35 @@ public class LoginController extends HttpServlet {
 	// Steps 1 : ToUpload file to particular location(Encrypt)
 	// 2 : To encrypt file and store in same location
 
-	private void fileUploadDecrypt(HttpServletRequest request, HttpServletResponse response) {
+	private void fileUploadDecrypt(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// TODO Auto-generated method stub
 
 		// fileupload method
+		
+		BufferedWriter bw = null;
+		try {
+			String clearEncryptKey = "1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF";
+			String[] fileNames = filupload(request);
+			String fileName_To_Encrypt = fileNames[0];
+			String fileName_key = fileNames[1];
+			File_Reader_Writer filereaderWriter = new File_Reader_Writer();
+			
+			String encryptedData =  filereaderWriter.readAndEncrypt( fileName_To_Encrypt,  fileName_key);
+		
+			System.out.println("values in encryptedData : "+encryptedData);
+			PrintWriter pw = response.getWriter();
+			pw.write("sucess");
+
+		}catch(Exception ex) {
+			System.out.println(ex);
+			ex.printStackTrace();
+		}finally {
+			
+			if(bw != null) {
+				
+				bw.close();
+			}
+		}
 
 	}
 
@@ -141,9 +167,11 @@ public class LoginController extends HttpServlet {
 			String[] fileNames = filupload(request);
 			String fileName_To_Encrypt = fileNames[0];
 			String fileName_key = fileNames[1];
+			File_Reader_Writer filereaderWriter = new File_Reader_Writer();
 			
-			
+			String encryptedData =  filereaderWriter.readAndEncrypt( fileName_To_Encrypt,  fileName_key);
 		
+			System.out.println("values in encryptedData : "+encryptedData);
 			PrintWriter pw = response.getWriter();
 			pw.write("sucess");
 
